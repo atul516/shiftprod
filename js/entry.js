@@ -2,9 +2,10 @@
 *
 * Copyright - GPL Version 3
 *
-* Libraries used: jQuery, jspdf, html2canvas, html2pdf, jhxlsx
+* Library credits: jQuery, jQuery-UI, chosen, popper, jspdf,
+*                  html2canvas, html2pdf, jhxlsx, FileSaver 
 *
-* Author: Atul Pratap Singh (https://github.com/atuldch)
+* Author: Atul Pratap Singh (https://github.com/atul516)
 */
 
 var coal_shovel_seam = {};
