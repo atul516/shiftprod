@@ -473,9 +473,9 @@ function populate_data_object_for_excel() {
             });
         }
     });
-    populate_special_trips();
+    populate_special_trips_table();
     $('#dumperwise_entry').hide('slide', {direction: 'left'}, 1000);
-    $('#dumperwise_special_trips').show('slide', {direction: 'right'}, 1000);
+    $('#special_trips_div').show('slide', {direction: 'right'}, 1000);
 }
 
 function get_dump_location(material_type, seam, section, shovel_name, dumper_name) {
@@ -516,17 +516,17 @@ function get_dump_location(material_type, seam, section, shovel_name, dumper_nam
 }
 
 function go_back() {
-  $('#dumperwise_special_trips').hide('slide', {direction: 'right'}, 1000);
+  $('#special_trips_div').hide('slide', {direction: 'right'}, 1000);
   $('#dumperwise_entry').show('slide', {direction: 'left'}, 1000);
 }
 
 function go_back_1() {
   $('#excel_buttons').hide('slide', {direction: 'right'}, 1000);
-  $('#dumperwise_special_trips').show('slide', {direction: 'left'}, 1000);
+  $('#special_trips_div').show('slide', {direction: 'left'}, 1000);
 }
 
 function go_forward() {
-  $('#dumperwise_special_trips').hide('slide', {direction: 'left'}, 1000);
+  $('#special_trips_div').hide('slide', {direction: 'left'}, 1000);
   $('#excel_buttons').show('slide', {direction: 'right'}, 1000);
 }
 
@@ -541,40 +541,53 @@ function get_sap_compatible_excel() {
   Jhxlsx.export(dataForPage, options);
 }
 
-function populate_special_trips() {
-  var unique_dumper_operator_data = {};
-  var operator_total_trips = {};
+function populate_special_trips_table() {
+  var unique_operator_for_special_trips = {};
+  //Get operator names from shovel table
+  $('#shovel_table > tbody > tr').each(function (index, tr) {
+    var operator = $(tr).children('td').eq(1).children('select').eq(0);
+    if ($(operator).length > 0 && $(operator).val() !== '') {
+      if (! ($(operator).val() in unique_operator_for_special_trips)) {
+        unique_operator_for_special_trips[$(operator).val()] = {};
+        unique_operator_for_special_trips[$(operator).val()]['Oprtr/Vend'] = $(operator).val();
+        unique_operator_for_special_trips[$(operator).val()]['Name'] = $(operator).find("option:selected" ).text().split('--')[0].trim();
+        var total_trips = 0;
+        unique_operator_for_special_trips[$(operator).val()]['Trips'] = total_trips;
+      }
+    }
+  });
+  //get operator names from dumper table as well as count their total trips
   $('#dumper_table > tbody > tr').each(function (index, tr) {
     var operator = $(tr).children('td').eq(1).children('select').eq(0);
     if ($(operator).length > 0 && $(operator).val() !== '') {
-      if (! ($(operator).val() in unique_dumper_operator_data)) {
-        unique_dumper_operator_data[$(operator).val()] = {};
-        unique_dumper_operator_data[$(operator).val()]['Oprtr/Vend'] = $(operator).val();
-        unique_dumper_operator_data[$(operator).val()]['Name'] = $(operator).find("option:selected" ).text().split('--')[0].trim();
+      if (! ($(operator).val() in unique_operator_for_special_trips)) {
+        unique_operator_for_special_trips[$(operator).val()] = {};
+        unique_operator_for_special_trips[$(operator).val()]['Oprtr/Vend'] = $(operator).val();
+        unique_operator_for_special_trips[$(operator).val()]['Name'] = $(operator).find("option:selected" ).text().split('--')[0].trim();
         var total_trips = 0;
         $(tr).find('.shovel_dumper_trip').each(function () {
           if ($(this).val() !== '') {
               total_trips += parseInt($(this).val());
           }
         });
-        unique_dumper_operator_data[$(operator).val()]['Trips'] = total_trips;
-      } else if ($(operator).val() in unique_dumper_operator_data) {
+        unique_operator_for_special_trips[$(operator).val()]['Trips'] = total_trips;
+      } else if ($(operator).val() in unique_operator_for_special_trips) {
         var total_trips = 0;
         $(tr).find('.shovel_dumper_trip').each(function () {
           if ($(this).val() !== '') {
               total_trips += parseInt($(this).val());
           }
         });
-        unique_dumper_operator_data[$(operator).val()]['Trips'] += total_trips;
+        unique_operator_for_special_trips[$(operator).val()]['Trips'] += total_trips;
       }
     }
   });
 
-  $('#dumper_table_special_trips > tbody').children().remove();
-  $.each(unique_dumper_operator_data, function (key, value){
-    let operator_no = unique_dumper_operator_data[key]['Oprtr/Vend'];
-    let operator_name = unique_dumper_operator_data[key]['Name'];
-    let total_trips = unique_dumper_operator_data[key]['Trips'];
+  $('#special_trips_table > tbody').children().remove();
+  $.each(unique_operator_for_special_trips, function (key, value){
+    let operator_no = unique_operator_for_special_trips[key]['Oprtr/Vend'];
+    let operator_name = unique_operator_for_special_trips[key]['Name'];
+    let total_trips = unique_operator_for_special_trips[key]['Trips'];
     const tr = `
     <tr>
       <td>
@@ -603,7 +616,7 @@ function populate_special_trips() {
       </td>
     </tr>
     `;
-    $('#dumper_table_special_trips > tbody').append(tr);
+    $('#special_trips_table > tbody').append(tr);
   });
 }
 

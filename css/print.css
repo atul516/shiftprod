@@ -73,7 +73,7 @@ td select, td input
   width:100%;
     display: block !important;
 }
-#dumperwise_special_trips {
+#special_trips_div {
   display: none !important;
   width:100%;
 }
