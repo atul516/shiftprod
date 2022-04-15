@@ -15,8 +15,15 @@ var material_code_ob = 4900000011;
 var process_order_purewa_coal = 60008065;
 var process_order_turra_coal = 60008066;
 var process_order_ob = 70005488;
-//JSON for "the data"
+//JSON in the format as required by jhxlsx library for creating SAP Compatible excel
 var dataForSAPCompatibleExcel = [
+    {
+        "sheetName": "Sheet1",
+        "data": []
+    }
+];
+// separate array for special trips
+var dataForSpecialTripsExcel = [
     {
         "sheetName": "Sheet1",
         "data": []
@@ -272,7 +279,7 @@ function get_pdf_report() {
     }).save();
 }
 
-function populate_data_object_for_excel() {
+function populate_data_object_for_sap_excel() {
     var check = check_mandatory_fields();
     if (check == true) {
         alert('ERROR: Empty fields in DUMPER TABLE!');
@@ -372,7 +379,6 @@ function populate_data_object_for_excel() {
     });
 
     var shovel_working_hour_distribution = working_hour_distribution(shovel_working_hours, shovel_dumper_trips);
-
 
     $(dumper_thead_th).each(function (index, th) {
         if ($(th).hasClass("shovel_column")) {
@@ -479,6 +485,40 @@ function populate_data_object_for_excel() {
     $('#special_trips_div').show('slide', { direction: 'right' }, 1000);
 }
 
+function populate_data_object_for_special_trips_excel() {
+    //reinitialize data array to empty
+    dataForSpecialTripsExcel[0].data = [];
+    //Create header
+    let header = [];
+    header.push({ "text": "Oprtr/Vend" });
+    header.push({ "text": "Name" });
+    header.push({ "text": "Trips" });
+    header.push({ "text": "First hr" });
+    header.push({ "text": "Mid hr" });
+    header.push({ "text": "Last hr" });
+
+    dataForSpecialTripsExcel[0].data.push(header);
+
+    $('#special_trips_table > tbody > tr').each(function(index, tr) {
+        let Oprtr = $(tr).find('td span').eq(0).text();
+        let Name = $(tr).find('td span').eq(1).text();
+        let Trips = $(tr).find('td span').eq(2).text();
+        let first_hr = $(tr).find('td > input').eq(0).val();
+        let mid_hr = $(tr).find('td > input').eq(1).val();
+        let last_hr = $(tr).find('td > input').eq(2).val();
+        //data to insert
+        let data = [];
+        data.push({ "text": Oprtr });
+        data.push({ "text": Name });
+        data.push({ "text": Trips });
+        data.push({ "text": first_hr });
+        data.push({ "text": mid_hr });
+        data.push({ "text": last_hr });
+
+        dataForSpecialTripsExcel[0].data.push(data);
+    });
+}
+
 function get_dump_location(material_type, seam, section, shovel_name, dumper_name) {
     /*
     --> All OB: OB12 fix
@@ -527,6 +567,7 @@ function go_back_1() {
 }
 
 function go_forward() {
+    populate_data_object_for_special_trips_excel();
     $('#special_trips_div').hide('slide', { direction: 'left' }, 1000);
     $('#excel_buttons').show('slide', { direction: 'right' }, 1000);
 }
@@ -540,6 +581,17 @@ function get_sap_compatible_excel() {
         fileName: $('#date').val() + "_Shift_" + $('#shift').val() + "_" + $('#section').val()
     };
     Jhxlsx.export(dataForSAPCompatibleExcel, options);
+}
+
+function get_special_trips_excel() {
+    if (dataForSpecialTripsExcel[0].data.length <= 0) {
+        alert('Error: Data object is not populated yet.');
+        return;
+    }
+    var options = {
+        fileName: "Special_Trips_" + $('#date').val() + "_Shift_" + $('#shift').val() + "_" + $('#section').val()
+    };
+    Jhxlsx.export(dataForSpecialTripsExcel, options);
 }
 
 function populate_special_trips_table() {
@@ -796,8 +848,9 @@ $(document).ready(function () {
     $(".add_row1").on('click', add_row_to_shovel_table);
     $(".add_row2").on('click', add_row_to_dumper_table);
     $("#validate2").on('click', check_mandatory_fields);
-    $("#populate_data_object").on('click', populate_data_object_for_excel);
+    $("#populate_data_object").on('click', populate_data_object_for_sap_excel);
     $("#get_sap_compatible_excel").on('click', get_sap_compatible_excel);
+    $("#get_special_trips_excel").on('click', get_special_trips_excel);
     $("#go_back").on('click', go_back);
     $("#go_back_1").on('click', go_back_1);
     $("#go_forward").on('click', go_forward);
