@@ -264,8 +264,12 @@ function working_hour_distribution(dumper_working_hours, dumper_shovel_trips) {
 function get_pdf_report() {
     $('select').each(function () {
         $(this).parent().children('span').remove();
+        let value = $(this).find('option:selected').text();
+        if (value.indexOf('--') > -1) {
+            value = value.replace('--', '<br />');
+        }
         $(this).after($('<span class="select-print">'
-            + $(this).find('option:selected').text() + '</span>'));
+            + value + '</span>'));
     });
     $('input[type="number"],input[type="date"]').each(function () {
         $(this).parent().children('span').remove();
