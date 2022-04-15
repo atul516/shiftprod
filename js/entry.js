@@ -1,4 +1,4 @@
-/* Dudhichua shift wise entry v2.0
+/* Dudhichua shift wise entry v2.1
 *
 * Copyright - GPL Version 3
 *
