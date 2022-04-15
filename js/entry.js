@@ -215,6 +215,7 @@ function calc_total(obj) {
     let ind = $(obj).closest('td').index();
     var name_attr = $(obj).attr("name").split('_');
     let shovel_unique_id = name_attr[0] + '_' + name_attr[2].slice(0, -2) + '_' + name_attr[1];
+    shovel_unique_id = shovel_unique_id.trim();
 
 
     if (shovel_unique_id && shovel_unique_id.length > 0) {
@@ -232,6 +233,11 @@ function calc_total(obj) {
         });
         $table.find('tr.totalColumn').children().eq(ind).html(total);
         $table.find('tr.totalQuantityColumn').children().eq(ind).html(total_quantity);
+
+        //set total value in shovel table
+        let relevant_row = $('#shovel_table').find('.' + shovel_unique_id);
+        $(relevant_row).find('td:nth-last-child(2) span').text(total);
+        $(relevant_row).find('td:last-child span').text(total_quantity);
     }
 }
 
