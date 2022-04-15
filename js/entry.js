@@ -150,6 +150,7 @@ function create_corresponding_dumper_column() {
             $('#dumper_table > tbody').find('.totalQuantityColumn').children().eq(ind_dump - 1).after("<td></td>");
         }
         $(dumper_tbody_tr).find('.coal_dump_column_exists').parent().before("<td class='" + shovel_unique_id + "'><input name='" + shovel_unique_id.split('_')[0] + "_Coal_" + shovel_unique_id.split('_')[1] + "[]' class='shovel_dumper_trip coal_inp inp " + "sum_" + shovel_unique_id + "' required='required' maxlength='128' type='number' value='' min='0' data-rule-required='true' data-msg-required='Please enter a valid number'></td>");
+        $(shovel_table_row).addClass(shovel_unique_id);
     } else if ($(shovel_table_row).find('select[name="material_type[]"]').val() === 'OB') {
         shovel_unique_id = $(shovel_table_row).find('select[name="shovel_no[]"]').val() + '_' + $(shovel_table_row).find('select[name="shovel_operator[]"]').val() + '_OB';
         if ($(dumper_thead_tr).find('.' + shovel_unique_id).length > 0) {
@@ -177,6 +178,7 @@ function create_corresponding_dumper_column() {
             $('#dumper_table > tbody').find('.totalQuantityColumn').children().eq(ind_dump - 1).after("<td></td>");
         }
         $(dumper_tbody_tr).find('.ob_dump_column_exists').parent().before("<td class='" + shovel_unique_id + "'><input name='" + shovel_unique_id.split('_')[0] + "_OB_" + shovel_unique_id.split('_')[1] + "[]' class='shovel_dumper_trip ob_inp inp " + "sum_" + shovel_unique_id + "' required='required' maxlength='128' type='number' value='' min='0' data-rule-required='true' data-msg-required='Please enter a valid number'></td>");
+        $(shovel_table_row).addClass(shovel_unique_id);
     }
     //disable for further edit
     $(this).val('Added').removeClass('btn-primary').addClass('btn-success').prop('disabled', true);
