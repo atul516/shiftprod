@@ -1,5 +1,8 @@
-table thead th {
-    background: rgb(255, 255, 255);
+table > thead > tr > th {
+    background: rgb(255, 255, 255) !important;
+}
+table > thead > th {
+  background: rgb(255, 255, 255) !important;
 }
 .page-head{
     background: #ffffff;
@@ -69,7 +72,7 @@ td select, td input
 }
 #dumperwise_entry{
   width:100%;
-    display: block !important;
+  display: block !important;
 }
 #special_trips_div {
   display: none !important;

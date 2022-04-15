@@ -20,6 +20,11 @@ table thead th {
     top:0;
     z-index: 1000;
 }
+#grand_total > div{
+  width:auto;
+  margin-right: 60px;
+  float: left;
+}
 .edit {
     display:    none;
     position:   absolute;

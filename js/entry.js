@@ -217,7 +217,6 @@ function calc_total(obj) {
     let shovel_unique_id = name_attr[0] + '_' + name_attr[2].slice(0, -2) + '_' + name_attr[1];
     shovel_unique_id = shovel_unique_id.trim();
 
-
     if (shovel_unique_id && shovel_unique_id.length > 0) {
         $table.find('tr:not(.totalColumn) .sum_' + shovel_unique_id).each(function () {
             total += +$(this).val();
@@ -238,6 +237,30 @@ function calc_total(obj) {
         let relevant_row = $('#shovel_table').find('.' + shovel_unique_id);
         $(relevant_row).find('td:nth-last-child(2) span').text(total);
         $(relevant_row).find('td:last-child span').text(total_quantity);
+
+        //set grand totals
+        let grand_total_trips_coal = 0;
+        let grand_total_quantity_coal = 0;
+        let grand_total_trips_ob = 0;
+        let grand_total_quantity_ob = 0;
+        $('#shovel_table').find('.shovel_total_trips').each(function() {
+            if ($(this).parent().parent().find('select[name="material_type[]"]').val() === 'Coal') {
+                grand_total_trips_coal += parseInt($(this).text());
+            } else if ($(this).parent().parent().find('select[name="material_type[]"]').val() === 'OB') {
+                grand_total_trips_ob += parseInt($(this).text());
+            }
+        });
+        $('#shovel_table').find('.shovel_total_quantity').each(function() {
+            if ($(this).parent().parent().find('select[name="material_type[]"]').val() === 'Coal') {
+                grand_total_quantity_coal += parseInt($(this).text());
+            } else if ($(this).parent().parent().find('select[name="material_type[]"]').val() === 'OB') {
+                grand_total_quantity_ob += parseInt($(this).text());
+            }
+        });
+        $('#grand_total_trips_coal').text(grand_total_trips_coal);
+        $('#grand_total_quantity_coal').text(grand_total_quantity_coal);
+        $('#grand_total_trips_ob').text(grand_total_trips_ob);
+        $('#grand_total_quantity_ob').text(grand_total_quantity_ob);
     }
 }
 

@@ -231,12 +231,6 @@
                     </div>
                     <div class='scroll_space'>
                         <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
                     </div>
                 </div>
                 <div id="excel_buttons">
@@ -269,12 +263,69 @@
                     <div class='scroll_space'>
                         <br>
                         <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
                     </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div id="grand_total">
+                <div>
+                    <form>
+                        <table style="width:auto;" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Shift Grand Total (Coal)</th>
+                                </tr>
+                                <tr>
+                                    <th
+                                        style="background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(153, 173, 231));">
+                                        Total Trips</th>
+                                    <th
+                                        style="background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(153, 173, 231));">
+                                        Total Coal Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span id="grand_total_trips_coal">0</span>
+                                    </td>
+                                    <td>
+                                        <span id="grand_total_quantity_coal">0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div>
+                    <form>
+                        <table style="width:auto;" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Shift Grand Total (OB)</th>
+                                </tr>
+                                <tr>
+                                    <th
+                                        style="background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(153, 173, 231));">
+                                        Total Trips</th>
+                                    <th
+                                        style="background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(153, 173, 231));">
+                                        Total OB Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span id="grand_total_trips_ob">0</span>
+                                    </td>
+                                    <td>
+                                        <span id="grand_total_quantity_ob">0</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>
@@ -438,11 +489,11 @@
                 </div>
             </td>
             <td>
-                <span>
+                <span class="shovel_total_trips">0
                 </span>
             </td>
             <td>
-                <span>
+                <span class="shovel_total_quantity">0
                 </span>
             </td>
         </tr>
