@@ -124,7 +124,7 @@ function create_corresponding_dumper_column() {
     if ($(shovel_table_row).find('select[name="material_type[]"]').val() === 'Coal') {
         shovel_unique_id = $(shovel_table_row).find('select[name="shovel_no[]"]').val() + '_' + $(shovel_table_row).find('select[name="shovel_operator[]"]').val() + '_Coal';
         if ($(dumper_thead_tr).find('.' + shovel_unique_id).length > 0) {
-            alert('Such shovel combination already exists!');
+            alert('Such shovel combination already exists!! This duplicate shovel row will now be removed!');
             $(shovel_table_row).remove();
             return;
         }
