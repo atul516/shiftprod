@@ -16,7 +16,7 @@ var process_order_purewa_coal = 60008065;
 var process_order_turra_coal = 60008066;
 var process_order_ob = 70005488;
 //JSON for "the data"
-var dataForPage = [
+var dataForSAPCompatibleExcel = [
     {
         "sheetName": "Sheet1",
         "data": []
@@ -279,7 +279,7 @@ function populate_data_object_for_excel() {
         return;
     }
     //reinitialize data array to empty
-    dataForPage[0].data = [];
+    dataForSAPCompatibleExcel[0].data = [];
     //Create header
     var header = [];
     header.push({ "text": "Plant" });
@@ -303,7 +303,7 @@ function populate_data_object_for_excel() {
     header.push({ "text": "DUMPYARD CODE" });
     header.push({ "text": "Breakdown Time" });
 
-    dataForPage[0].data.push(header);
+    dataForSAPCompatibleExcel[0].data.push(header);
 
     var dumper_thead_th = $('#dumper_table > thead > tr > th');
 
@@ -469,7 +469,7 @@ function populate_data_object_for_excel() {
                     excelRowToInsert.push({ "text": '' });
                     excelRowToInsert.push({ "text": dump_loc });
                     excelRowToInsert.push({ "text": '' });
-                    dataForPage[0].data.push(excelRowToInsert);
+                    dataForSAPCompatibleExcel[0].data.push(excelRowToInsert);
                 }
             });
         }
@@ -532,14 +532,14 @@ function go_forward() {
 }
 
 function get_sap_compatible_excel() {
-    if (dataForPage[0].data.length <= 0) {
+    if (dataForSAPCompatibleExcel[0].data.length <= 0) {
         alert('Error: Data object is not populated yet.');
         return;
     }
     var options = {
         fileName: $('#date').val() + "_Shift_" + $('#shift').val() + "_" + $('#section').val()
     };
-    Jhxlsx.export(dataForPage, options);
+    Jhxlsx.export(dataForSAPCompatibleExcel, options);
 }
 
 function populate_special_trips_table() {
