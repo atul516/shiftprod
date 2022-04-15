@@ -17,9 +17,6 @@ table thead th {
 label{
     background-color:rgb(255, 255, 255) !important;
 }
-.select-print {
-    display: none;
-}
 .no-print
 {
     display: none !important;
@@ -36,6 +33,7 @@ td select, td input
 }
 .select-print {
     display: block !important;
+    font-size:.8em;
 }
 .printpdf {
     font-size: small;
@@ -82,4 +80,16 @@ body {
 }
 #excel_buttons {
   display: none !important;
+}
+#dumper_table > thead > tr > th {
+  font-size:.8em;
+}
+#shovel_table > thead > tr > th {
+  font-size:.8em;
+}
+.totalColumn, .totalQuantityColumn {
+  font-size:.8em;
+}
+#shovel_table > tbody > tr > td > span {
+  font-size:.8em;
 }

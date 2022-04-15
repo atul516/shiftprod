@@ -115,15 +115,15 @@
                     <table id="shovel_table" style="width: auto;" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Shovel No.</th>
-                                <th>Shovel Operator</th>
-                                <th>Material Type</th>
+                                <th>Shovel <br /> No.</th>
+                                <th>Shovel <br /> Operator</th>
+                                <th>Material <br /> Type</th>
                                 <th>Seam</th>
-                                <th>Work Hrs.</th>
+                                <th>Work <br /> Hrs.</th>
                                 <th class="add_delete_button"></th>
                                 <th class="add_delete_button"></th>
-                                <th>Total Trips</th>
-                                <th>Total Quantity</th>
+                                <th>Total <br /> Trips</th>
+                                <th>Total <br /> Quantity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -152,9 +152,9 @@
                         <table id="dumper_table" style="width:auto;" class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Dumper No.</th>
-                                    <th>Dumper Operator</th>
-                                    <th class="work_hours_dumper_head">Work Hrs.</th>
+                                    <th>Dumper <br /> No.</th>
+                                    <th>Dumper <br /> Operator</th>
+                                    <th class="work_hours_dumper_head">Work <br /> Hrs.</th>
                                     <th class="dumper_row_delete_button add_delete_button"></th>
                                 </tr>
                             </thead>
@@ -299,7 +299,7 @@
     <template id="shovel_row">
         <tr>
             <td>
-                <select style="width: 120px;" name="shovel_no[]" class="searchable shv">
+                <select style="width: 100px;" name="shovel_no[]" class="searchable shv">
                     <option value="" selected disabled hidden>Select Shovel</option>
                     <option value='PH-06'>PH-06</option>
                     <option value='PH-07'>PH-07</option>
@@ -326,8 +326,8 @@
                 </select>
             </td>
             <td>
-                <select style="width: 200px;" name="shovel_operator[]" class="searchable shv">
-                    <option value="" selected disabled hidden>Select Shovel Operator</option>
+                <select style="width: 150px;" name="shovel_operator[]" class="searchable shv">
+                    <option value="" selected disabled hidden>Select Operator</option>
                     <option value='0'>SIDE CASTING -- 0</option>
                     <option value='26006027'>SUDAMA PANDEY -- 26006027</option>
                     <option value='26006049'>KUNJ BIHARI PANDEY -- 26006049</option>
@@ -398,14 +398,14 @@
                 </select>
             </td>
             <td>
-                <select style="width: 120px;" name="material_type[]" class="searchable shv">
+                <select style="width: 100px;" name="material_type[]" class="searchable shv">
                     <option value="" selected disabled hidden>Select Material</option>
                     <option value='Coal'>COAL</option>
                     <option value='OB'> OB</option>
                 </select>
             </td>
             <td>
-                <select style="width: 150px;" name="seam[]" class="searchable shv">
+                <select style="width: 120px;" name="seam[]" class="searchable shv">
                     <option value="" selected disabled hidden>Select Seam</option>
                     <option value='TURRA BAND-OB|TURRA BAND-OB WEST'>OB-Turra Band West</option>
                     <option value='TURRA BAND-OB|TURRA BAND-OB EAST'>OB-Turra Band East</option>
@@ -424,7 +424,7 @@
             <td>
                 <input name="shovel_working_hours[]" class='inp1 shv shovel_work_hour' required="required"
                     maxlength="128" type="number" value="" min="1" max="7.5" placeholder="" data-rule-required="true"
-                    data-msg-required="Please enter a valid number">
+                    data-msg-required="Please enter a valid number" style="width: 55px;">
             </td>
             <td class="add_delete_button">
                 <div style="float:left; margin:0 15px 0 0;">
@@ -438,11 +438,11 @@
                 </div>
             </td>
             <td>
-                <span>0
+                <span>
                 </span>
             </td>
             <td>
-                <span>0
+                <span>
                 </span>
             </td>
         </tr>
@@ -804,7 +804,7 @@
             <td class="work_hours_dumper_body">
                 <input name="dumper_working_hours[]" class='inp1 dumper_wh' required="required" maxlength="128"
                     type="number" value="" min="1" max="7.5" placeholder="" data-rule-required="true"
-                    data-msg-required="Please enter a valid number">
+                    data-msg-required="Please enter a valid number" style="width: 55px;">
             </td>
             <td class="dumper_row_delete_button add_delete_button">
                 <div style='float:left; margin:0 15px 0 0;'><input type='button' value='X'
