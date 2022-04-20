@@ -75,7 +75,7 @@ td select, td input
   display: block !important;
 }
 #special_trips_div {
-  display: none !important;
+  display: block !important;
   width:100%;
 }
 body {
