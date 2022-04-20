@@ -443,19 +443,7 @@ function populate_data_object_for_sap_excel() {
                     } else if (coal_shovel_seam[shovel_unique_id][1].indexOf('PURVA') > -1 && threeFields[1] === 'Coal') {
                         excelRowToInsert.push({ "text": process_order_purewa_coal });
                     }
-                    let date_to_enter = new Date($('#date').val());
-                    let day = date_to_enter.getDate();
-                    let month = date_to_enter.getMonth();
-                    let year = date_to_enter.getFullYear();
-                    month = month + 1;
-                    if ((String(day)).length == 1) {
-                        day = '0' + day;
-                    }
-                    if ((String(month)).length == 1) {
-                        month = '0' + month;
-                    }
-                    date_to_enter = day + '.' + month + '.' + year;
-                    excelRowToInsert.push({ "text": date_to_enter });
+                    excelRowToInsert.push({ "text": get_date_to_enter() });
                     excelRowToInsert.push({ "text": $('#shift').val() });
                     if (threeFields[1] === 'Coal') {
                         excelRowToInsert.push({ "text": coal_shovel_seam[shovel_unique_id][0] });
@@ -520,11 +508,29 @@ function populate_data_object_for_sap_excel() {
     $('#special_trips_div').show('slide', { direction: 'right' }, 1000);
 }
 
+function get_date_to_enter() {
+    let date_to_enter = new Date($('#date').val());
+    let day = date_to_enter.getDate();
+    let month = date_to_enter.getMonth();
+    let year = date_to_enter.getFullYear();
+    month = month + 1;
+    if ((String(day)).length == 1) {
+        day = '0' + day;
+    }
+    if ((String(month)).length == 1) {
+        month = '0' + month;
+    }
+    date_to_enter = day + '.' + month + '.' + year;
+    return date_to_enter;
+}
+
 function populate_data_object_for_special_trips_excel() {
     //reinitialize data array to empty
     dataForSpecialTripsExcel[0].data = [];
     //Create header
     let header = [];
+    header.push({ "text": "Production_Dates" });
+    header.push({ "text": "shift" });
     header.push({ "text": "Oprtr/Vend" });
     header.push({ "text": "Name" });
     header.push({ "text": "Trips" });
@@ -541,8 +547,9 @@ function populate_data_object_for_special_trips_excel() {
         let first_hr = $(tr).find('td > input').eq(0).val();
         let mid_hr = $(tr).find('td > input').eq(1).val();
         let last_hr = $(tr).find('td > input').eq(2).val();
-        //data to insert
         let data = [];
+        data.push({ "text": get_date_to_enter() });
+        data.push({ "text": $('#shift').val() });
         data.push({ "text": Oprtr });
         data.push({ "text": Name });
         data.push({ "text": Trips });
