@@ -23,7 +23,15 @@ var dataForSAPCompatibleExcel = [
     }
 ];
 // separate array for special trips
-var dataForSpecialTripsExcel = [
+var dataForSpecialTripsExcelShovel = [
+    {
+        "sheetName": "Sheet1",
+        "data": []
+    }
+];
+
+// separate array for special trips
+var dataForSpecialTripsExcelDumper = [
     {
         "sheetName": "Sheet1",
         "data": []
@@ -526,7 +534,8 @@ function get_date_to_enter() {
 
 function populate_data_object_for_special_trips_excel() {
     //reinitialize data array to empty
-    dataForSpecialTripsExcel[0].data = [];
+    dataForSpecialTripsExcelShovel[0].data = [];
+    dataForSpecialTripsExcelDumper[0].data = [];
     //Create header
     let header = [];
     header.push({ "text": "Production_Dates" });
@@ -538,9 +547,10 @@ function populate_data_object_for_special_trips_excel() {
     header.push({ "text": "Mid hr" });
     header.push({ "text": "Last hr" });
 
-    dataForSpecialTripsExcel[0].data.push(header);
+    dataForSpecialTripsExcelShovel[0].data.push(header);
+    dataForSpecialTripsExcelDumper[0].data.push(header);
 
-    $('#special_trips_table > tbody > tr').each(function(index, tr) {
+    $('#special_trips_table_shovel > tbody > tr').each(function(index, tr) {
         let Oprtr = $(tr).find('td span').eq(0).text();
         let Name = $(tr).find('td span').eq(1).text();
         let Trips = $(tr).find('td span').eq(2).text();
@@ -557,7 +567,27 @@ function populate_data_object_for_special_trips_excel() {
         data.push({ "text": mid_hr });
         data.push({ "text": last_hr });
 
-        dataForSpecialTripsExcel[0].data.push(data);
+        dataForSpecialTripsExcelShovel[0].data.push(data);
+    });
+
+    $('#special_trips_table_dumper > tbody > tr').each(function(index, tr) {
+        let Oprtr = $(tr).find('td span').eq(0).text();
+        let Name = $(tr).find('td span').eq(1).text();
+        let Trips = $(tr).find('td span').eq(2).text();
+        let first_hr = $(tr).find('td > input').eq(0).val();
+        let mid_hr = $(tr).find('td > input').eq(1).val();
+        let last_hr = $(tr).find('td > input').eq(2).val();
+        let data = [];
+        data.push({ "text": get_date_to_enter() });
+        data.push({ "text": $('#shift').val() });
+        data.push({ "text": Oprtr });
+        data.push({ "text": Name });
+        data.push({ "text": Trips });
+        data.push({ "text": first_hr });
+        data.push({ "text": mid_hr });
+        data.push({ "text": last_hr });
+
+        dataForSpecialTripsExcelDumper[0].data.push(data);
     });
 }
 
@@ -626,28 +656,39 @@ function get_sap_compatible_excel() {
 }
 
 function get_special_trips_excel() {
-    if (dataForSpecialTripsExcel[0].data.length <= 0) {
-        alert('Error: Data object is not populated yet.');
+    if (dataForSpecialTripsExcelShovel[0].data.length <= 0) {
+        alert('Error: Shovel Data object is not populated yet.');
         return;
     }
     var options = {
-        fileName: "Special_Trips_" + $('#date').val() + "_Shift_" + $('#shift').val() + "_" + $('#section').val()
+        fileName: "Shovel_Special_Trips_" + $('#date').val() + "_Shift_" + $('#shift').val() + "_" + $('#section').val()
     };
-    Jhxlsx.export(dataForSpecialTripsExcel, options);
+    Jhxlsx.export(dataForSpecialTripsExcelShovel, options);
+
+
+    if (dataForSpecialTripsExcelDumper[0].data.length <= 0) {
+        alert('Error: Dumper Data object is not populated yet.');
+        return;
+    }
+    var options = {
+        fileName: "Dumper_Special_Trips_" + $('#date').val() + "_Shift_" + $('#shift').val() + "_" + $('#section').val()
+    };
+    Jhxlsx.export(dataForSpecialTripsExcelDumper, options);
 }
 
 function populate_special_trips_table() {
-    var unique_operator_for_special_trips = {};
+    var shovel_unique_operator_for_special_trips = {};
+    var dumper_unique_operator_for_special_trips = {};
     //Get operator names from shovel table
     $('#shovel_table > tbody > tr').each(function (index, tr) {
         var operator = $(tr).children('td').eq(1).children('select').eq(0);
         if ($(operator).length > 0 && $(operator).val() !== '') {
-            if (!($(operator).val() in unique_operator_for_special_trips)) {
-                unique_operator_for_special_trips[$(operator).val()] = {};
-                unique_operator_for_special_trips[$(operator).val()]['Oprtr/Vend'] = $(operator).val();
-                unique_operator_for_special_trips[$(operator).val()]['Name'] = $(operator).find("option:selected").text().split('--')[0].trim();
+            if (!($(operator).val() in shovel_unique_operator_for_special_trips)) {
+                shovel_unique_operator_for_special_trips[$(operator).val()] = {};
+                shovel_unique_operator_for_special_trips[$(operator).val()]['Oprtr/Vend'] = $(operator).val();
+                shovel_unique_operator_for_special_trips[$(operator).val()]['Name'] = $(operator).find("option:selected").text().split('--')[0].trim();
                 var total_trips = 0;
-                unique_operator_for_special_trips[$(operator).val()]['Trips'] = total_trips;
+                shovel_unique_operator_for_special_trips[$(operator).val()]['Trips'] = total_trips;
             }
         }
     });
@@ -655,34 +696,34 @@ function populate_special_trips_table() {
     $('#dumper_table > tbody > tr').each(function (index, tr) {
         var operator = $(tr).children('td').eq(1).children('select').eq(0);
         if ($(operator).length > 0 && $(operator).val() !== '') {
-            if (!($(operator).val() in unique_operator_for_special_trips)) {
-                unique_operator_for_special_trips[$(operator).val()] = {};
-                unique_operator_for_special_trips[$(operator).val()]['Oprtr/Vend'] = $(operator).val();
-                unique_operator_for_special_trips[$(operator).val()]['Name'] = $(operator).find("option:selected").text().split('--')[0].trim();
+            if (!($(operator).val() in dumper_unique_operator_for_special_trips)) {
+                dumper_unique_operator_for_special_trips[$(operator).val()] = {};
+                dumper_unique_operator_for_special_trips[$(operator).val()]['Oprtr/Vend'] = $(operator).val();
+                dumper_unique_operator_for_special_trips[$(operator).val()]['Name'] = $(operator).find("option:selected").text().split('--')[0].trim();
                 var total_trips = 0;
                 $(tr).find('.shovel_dumper_trip').each(function () {
                     if ($(this).val() !== '') {
                         total_trips += parseInt($(this).val());
                     }
                 });
-                unique_operator_for_special_trips[$(operator).val()]['Trips'] = total_trips;
-            } else if ($(operator).val() in unique_operator_for_special_trips) {
+                dumper_unique_operator_for_special_trips[$(operator).val()]['Trips'] = total_trips;
+            } else if ($(operator).val() in dumper_unique_operator_for_special_trips) {
                 var total_trips = 0;
                 $(tr).find('.shovel_dumper_trip').each(function () {
                     if ($(this).val() !== '') {
                         total_trips += parseInt($(this).val());
                     }
                 });
-                unique_operator_for_special_trips[$(operator).val()]['Trips'] += total_trips;
+                dumper_unique_operator_for_special_trips[$(operator).val()]['Trips'] += total_trips;
             }
         }
     });
 
-    $('#special_trips_table > tbody').children().remove();
-    $.each(unique_operator_for_special_trips, function (key, value) {
-        let operator_no = unique_operator_for_special_trips[key]['Oprtr/Vend'];
-        let operator_name = unique_operator_for_special_trips[key]['Name'];
-        let total_trips = unique_operator_for_special_trips[key]['Trips'];
+    $('#special_trips_table_shovel > tbody').children().remove();
+    $.each(shovel_unique_operator_for_special_trips, function (key, value) {
+        let operator_no = shovel_unique_operator_for_special_trips[key]['Oprtr/Vend'];
+        let operator_name = shovel_unique_operator_for_special_trips[key]['Name'];
+        let total_trips = shovel_unique_operator_for_special_trips[key]['Trips'];
         const tr = `
     <tr>
       <td>
@@ -711,7 +752,43 @@ function populate_special_trips_table() {
       </td>
     </tr>
     `;
-        $('#special_trips_table > tbody').append(tr);
+        $('#special_trips_table_shovel > tbody').append(tr);
+    });
+
+    $('#special_trips_table_dumper > tbody').children().remove();
+    $.each(dumper_unique_operator_for_special_trips, function (key, value) {
+        let operator_no = dumper_unique_operator_for_special_trips[key]['Oprtr/Vend'];
+        let operator_name = dumper_unique_operator_for_special_trips[key]['Name'];
+        let total_trips = dumper_unique_operator_for_special_trips[key]['Trips'];
+        const tr = `
+    <tr>
+      <td>
+        <span>${operator_no}</span>
+      </td>
+      <td>
+        <span>${operator_name}</span>
+      </td>
+      <td>
+        <span>${total_trips}</span>
+      </td>
+      <td>
+        <input name="first_hr[]" class='inp1 shv' required="required"
+            maxlength="128" type="number" value="" placeholder=""
+            data-rule-required="true" data-msg-required="Please enter a valid number">
+      </td>
+      <td>
+        <input name="mid_hr[]" class='inp1 shv' required="required"
+            maxlength="128" type="number" value="" placeholder=""
+            data-rule-required="true" data-msg-required="Please enter a valid number">
+      </td>
+      <td>
+        <input name="last_hr[]" class='inp1 shv' required="required"
+            maxlength="128" type="number" value="" placeholder=""
+            data-rule-required="true" data-msg-required="Please enter a valid number">
+      </td>
+    </tr>
+    `;
+        $('#special_trips_table_dumper > tbody').append(tr);
     });
 }
 
